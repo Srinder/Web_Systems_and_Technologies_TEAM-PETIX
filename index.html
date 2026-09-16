@@ -10,31 +10,34 @@
 <body>
   <div class="site-shell">
     <aside class="sidebar">
-      <a class="brand" href="#home"><span class="brand-mark">P</span> Team Petix</a>
+      <!-- Team Intro with Full-Width Banner Logo -->
       <div class="team-intro">
-        <div class="avatar">TP</div>
+        <div class="team-banner">
+          <img src="team-logo.jpeg" alt="Team Petix Logo">
+        </div>
         <h2>Team Petix</h2>
-        <p>Student technology portfolio</p>
+        <p>Bachelor of Science in Information Technology</p>
       </div>
+
+      <!-- Main Navigation -->
       <nav class="side-nav" aria-label="Main navigation">
-        <a href="#home">Home</a>
+        <a href="#home" class="active">Home</a>
         <a href="#projects">Projects</a>
         <a href="#members">Team members</a>
         <a href="#blog">Blog</a>
         <a href="#connect">Connect</a>
       </nav>
-      <p class="sidebar-note">Built collaboratively by the Team Petix members.</p>
     </aside>
 
     <main class="content">
+      <!-- Hero Section -->
       <section class="hero" id="home">
-        <p class="eyebrow">Team Petix • 2026</p>
         <h1>Learn together.<br>Build with purpose.</h1>
         <p class="hero-text">A shared space for our IT projects, individual portfolios, and the skills we are building along the way.</p>
         <a class="button" href="#members">Meet the team →</a>
       </section>
 
-      <!-- Semantic list for tool-strip -->
+      <!-- Semantic Tool-Strip -->
       <ul class="tool-strip" aria-label="Our areas of study">
         <li>HTML &amp; CSS</li>
         <li>Data Analytics</li>
@@ -44,6 +47,7 @@
         <li>Student Portfolio</li>
       </ul>
 
+      <!-- Projects Section -->
       <section id="projects">
         <div class="section-heading">
           <h2>Featured work</h2>
@@ -65,6 +69,7 @@
         </div>
       </section>
 
+      <!-- Team Members Section -->
       <section id="members">
         <div class="section-heading">
           <h2>Meet the team</h2>
@@ -114,6 +119,7 @@
         </div>
       </section>
 
+      <!-- Blog Section -->
       <section id="blog">
         <div class="section-heading">
           <h2>Team updates</h2>
@@ -133,6 +139,7 @@
         </div>
       </section>
 
+      <!-- Contact Section -->
       <section id="connect">
         <div class="section-heading">
           <h2>Connect with us</h2>
@@ -149,10 +156,44 @@
           </form>
         </div>
       </section>
+
       <footer>
         <p>© 2026 Team Petix. Built as a collaborative student portfolio.</p>
       </footer>
     </main>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.side-nav a');
+      const sections = document.querySelectorAll('section[id]');
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (window.scrollY >= sectionTop - 150) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        if (current) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
