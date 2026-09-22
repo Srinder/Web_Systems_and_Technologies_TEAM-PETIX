@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jasver Kour Singh | Team Petix</title>
+  <title>Jasver Kour Singh - Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="profile-page">
@@ -13,70 +13,73 @@
         <div class="team-banner">
           <img src="team-logo.jpeg" alt="Team Petix Logo">
         </div>
-        <h2>Team Petix</h2>
+        <h2>MAPÚA MALAYAN DIGITAL COLLEGE</h2>
         <p>Bachelor of Science in Information Technology</p>
       </div>
-      <nav class="side-nav" aria-label="Profile navigation">
-        <a href="index.html">← Team hub</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Connect</a>
+      <nav class="side-nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#members" class="active">Team members</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#connect">Connect</a>
       </nav>
     </aside>
-    <main class="content">
 
-      
+    <main class="content">
       <section class="profile-hero">
+        <a href="carmela.html" class="profile-nav-btn prev" aria-label="Previous profile">‹</a>
+
         <div class="avatar">
           <img src="jasver.jpeg" alt="Jasver Kour Singh" class="profile-img">
         </div>
         <div>
-          <p class="eyebrow">Team Petix member</p>
-          <h1>Jasver Kour Singh</h1>
-          <p>BSIT in Data &amp; Analytics</p>
+          <p class="eyebrow" style="margin: 0; color: #667085; font-size: 0.88rem;">Team Petix member</p>
+          <h1 style="margin: 4px 0; font-size: 2.2rem; font-weight: 800;">Jasver Kour Singh</h1>
+          <p style="margin: 0; color: #f47c20; font-weight: 600;">BSIT in Data &amp; Analytics</p>
+        </div>
+
+        <a href="jonalyn.html" class="profile-nav-btn next" aria-label="Next profile">›</a>
+      </section>
+
+      <section class="card profile-section">
+        <h2 style="margin-top: 0;">About Me</h2>
+        <p>Enthusiastic Data Analytics specialist focused on turning raw numbers into insights. Experienced with frontend web techniques and backend database management.</p>
+      </section>
+
+      <section class="card profile-section">
+        <h2 style="margin-top: 0;">Education</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>BS Information Technology Major in Data Analytics</h3>
+            <p class="meta">Mapúa Malayan Digital College | Present</p>
+            <p>Courses include Object-Oriented Programming, Applied Data Analytics, Web Application Development, and Data Mining.</p>
+          </div>
         </div>
       </section>
 
-      
-      <section class="card profile-section" id="about">
-        <div class="card-icon">✦</div>
-        <h2>About me</h2>
-        <p>Focused on data preprocessing, quantitative research, and web system structures. Passionate about designing practical web tools driven by reliable data.</p>
+      <section class="card profile-section">
+        <h2 style="margin-top: 0;">Skills & Competencies</h2>
         <ul class="tag-list">
-          <li>Data Cleaning</li>
-          <li>Quantitative Analysis</li>
-          <li>HTML5</li>
+          <li>Data Warehousing</li>
+          <li>Python Analytics</li>
+          <li>JavaScript</li>
+          <li>CSS & Responsive UI</li>
+          <li>Git & GitHub</li>
         </ul>
       </section>
-      <section id="projects">
-        <div class="section-heading">
-          <h2>My projects</h2>
-          <p>Explore my recent analytics and web developments.</p>
-        </div>
-        <div class="card-grid">
-          <article class="card card-project">
-            <div class="card-icon">01</div>
-            <h3>Customer Segmentation Study</h3>
-            <p>Applied classification and clustering techniques to group data records into distinct categories.</p>
-            <a class="card-link" href="index.html#projects">View Team Work →</a>
-          </article>
-          <article class="card card-project">
-            <div class="card-icon">02</div>
-            <h3>Team Contact Form Integration</h3>
-            <p>Developed front-end input fields and accessibility layout for the site connect section.</p>
-            <a class="card-link" href="index.html#connect">View Contact Section →</a>
-          </article>
+
+      <section class="card profile-section">
+        <h2 style="margin-top: 0;">Projects</h2>
+        <div class="project-list">
+          <div class="project-item">
+            <h3>Team Petix Web Systems Portfolio</h3>
+            <p>Managed profile component structures and assisted in building seamless cross-page navigation links.</p>
+          </div>
         </div>
       </section>
-      <section class="card profile-section" id="contact">
-        <h2>Let's connect</h2>
-        <p>Reach out to discuss data analytics tools or web system implementations.</p>
-        <a class="card-link" href="index.html#connect">Send the team a message →</a>
-      </section>
-      <footer>
-        <p>© 2026 Team Petix</p>
-      </footer>
     </main>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

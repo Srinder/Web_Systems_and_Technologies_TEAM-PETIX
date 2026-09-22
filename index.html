@@ -3,25 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Team Petix collaborative student portfolio.">
-  <title>Team Petix | Portfolio Hub</title>
+  <title>Team Petix - MMDC IT Student Portfolio Hub</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="site-shell">
+    <!-- Sidebar Navigation -->
     <aside class="sidebar">
-      <!-- Team Intro with Full-Width Banner Logo -->
       <div class="team-intro">
         <div class="team-banner">
           <img src="team-logo.jpeg" alt="Team Petix Logo">
         </div>
-        <h2>Team Petix</h2>
+        <h2>MAPÚA MALAYAN DIGITAL COLLEGE</h2>
         <p>Bachelor of Science in Information Technology</p>
       </div>
-
-      <!-- Main Navigation -->
-      <nav class="side-nav" aria-label="Main navigation">
-        <a href="#home" class="active">Home</a>
+      <nav class="side-nav">
+        <a href="#hero" class="active">Home</a>
         <a href="#projects">Projects</a>
         <a href="#members">Team members</a>
         <a href="#blog">Blog</a>
@@ -29,180 +26,158 @@
       </nav>
     </aside>
 
+    <!-- Main Content Area -->
     <main class="content">
+      
       <!-- Hero Section -->
-      <section class="hero" id="home">
-        <h1>Learn together.<br>Build with purpose.</h1>
-        <p class="hero-text">A shared space for our IT projects, individual portfolios, and the skills we are building along the way.</p>
-        <a class="button" href="#members">Meet the team →</a>
+      <section id="hero" class="hero-card">
+        <h1>Learn together.<br><span class="highlight">Build with purpose.</span></h1>
+        <p class="hero-desc">A shared space for our IT projects, individual portfolios, and the skills we are building along the way.</p>
+        <a href="#members" class="btn primary-btn">Meet the team &rarr;</a>
+        
+        <div class="hero-tags">
+          <span class="pill-tag">HTML &amp; CSS</span>
+          <span class="pill-tag">Data Analytics</span>
+          <span class="pill-tag">Network Security</span>
+          <span class="pill-tag">Web Design</span>
+          <span class="pill-tag">Team Projects</span>
+          <span class="pill-tag">Student Portfolio</span>
+        </div>
       </section>
 
-      <!-- Semantic Tool-Strip -->
-      <ul class="tool-strip" aria-label="Our areas of study">
-        <li>HTML &amp; CSS</li>
-        <li>Data Analytics</li>
-        <li>Network Security</li>
-        <li>Web Design</li>
-        <li>Team Projects</li>
-        <li>Student Portfolio</li>
-      </ul>
+      <!-- Featured Work / Projects Section -->
+      <section id="projects" class="section-container">
+        <h2>Featured work</h2>
+        <p class="section-sub">What we are learning and building.</p>
 
-      <!-- Projects Section -->
-      <section id="projects">
-        <div class="section-heading">
-          <h2>Featured work</h2>
-          <p>What we are learning and building.</p>
-        </div>
-        <div class="card-grid">
-          <article class="card card-project">
-            <div class="card-icon">◫</div>
-            <h3>Team Portfolio Hub</h3>
-            <p>Our shared web space for presenting projects, progress, and individual contributions.</p>
-            <a class="card-link" href="#members">View our profiles →</a>
-          </article>
-          <article class="card card-project">
-            <div class="card-icon">⌘</div>
-            <h3>Data &amp; Security Analytics</h3>
-            <p>Collaborative student case studies on data processing and network traffic monitoring.</p>
-            <a class="card-link" href="#connect">Project details soon →</a>
-          </article>
+        <div class="card project-card">
+          <div class="project-icon">&#x25EB;</div>
+          <h3>Team Portfolio Hub</h3>
+          <p>Our shared web space for presenting projects, progress, and individual contributions.</p>
+          <a href="#members" class="text-link">View our profiles &rarr;</a>
         </div>
       </section>
 
       <!-- Team Members Section -->
-      <section id="members">
-        <div class="section-heading">
-          <h2>Meet the team</h2>
-          <p>Click a profile to see each member's work.</p>
-        </div>
-        <div class="card-grid">
+      <section id="members" class="section-container">
+        <h2>Meet the team</h2>
+        <p class="section-sub">Click a profile to see each member's work.</p>
 
-          <article class="card card-member member-card">
-            <div class="avatar-img-wrapper">
-              <img src="srinder.jpeg" alt="Srinder Kour Singh" class="member-photo">
+        <div class="team-grid">
+          
+          <!-- Srinder Kour Singh -->
+          <div class="team-card" data-href="srinder.html">
+            <div class="avatar">
+              <img src="srinder.jpeg" alt="Srinder Kour Singh">
             </div>
-            <h3>Srinder Kour Singh</h3>
-            <p>BSIT in Data &amp; Analytics</p>
-            <ul class="tag-list">
-              <li>Portfolio</li>
-              <li>Analytics</li>
-            </ul>
-            <a class="card-link" href="srinder.html">View profile →</a>
-          </article>
-
-          <article class="card card-member member-card">
-            <div class="avatar-img-wrapper">
-              <img src="carmela.jpg" alt="Ma. Carmela Paula Oreta" class="member-photo">
-            </div>
-            <h3>Ma. Carmela Paula Oreta</h3>
-            <p>BSIT in Data &amp; Analytics</p>
-            <ul class="tag-list">
-              <li>Portfolio</li>
-              <li>Analytics</li>
-            </ul>
-            <a class="card-link" href="carmela.html">View profile →</a>
-          </article>
-
-          <article class="card card-member member-card">
-             <div class="avatar-img-wrapper">
-              <img src="jasver.jpeg" alt="Jasver Kour Singh" class="member-photo">
-            </div>
-            <h3>Jasver Kour Singh</h3>
-            <p>BSIT in Data &amp; Analytics</p>
-            <ul class="tag-list">
-              <li>Data</li>
-              <li>Projects</li>
-            </ul>
-            <a class="card-link" href="jasver.html">View profile →</a>
-          </article>
-          <article class="card card-member member-card">
-            <div class="avatar">JT</div>
-            <h3>Jonalyn Tumpong</h3>
-            <p>BSIT in Network &amp; Cybersecurity</p>
-            <ul class="tag-list">
-              <li>Network</li>
-              <li>Security</li>
-            </ul>
-            <a class="card-link" href="jonalyn.html">View profile →</a>
-          </article>
-        </div>
-      </section>
-
-      <!-- Blog Section -->
-      <section id="blog">
-        <div class="section-heading">
-          <h2>Team updates</h2>
-          <p>Use this space for milestones and reflections.</p>
-        </div>
-        <div class="card card-wide">
-          <div class="blog-list">
-            <div class="blog-item">
-              <strong>Portfolio hub launched</strong>
-              <time datetime="2026">2026</time>
-            </div>
-            <div class="blog-item">
-              <strong>Next milestone: add individual projects</strong>
-              <time datetime="2026">Coming soon</time>
+            <div class="team-info">
+              <h3>Srinder Kour Singh</h3>
+              <p class="role">BSIT in Data &amp; Analytics</p>
+              <div class="member-tags">
+                <span class="mini-tag">Data</span>
+                <span class="mini-tag">Analytics</span>
+              </div>
+              <a href="srinder.html" class="profile-link">View profile &rarr;</a>
             </div>
           </div>
+
+          <!-- Ma. Carmela Paula Oreta -->
+          <div class="team-card" data-href="carmela.html">
+            <div class="avatar">
+              <img src="carmela.jpg" alt="Ma. Carmela Paula Oreta">
+            </div>
+            <div class="team-info">
+              <h3>Ma. Carmela Paula Oreta</h3>
+              <p class="role">BSIT in Data &amp; Analytics</p>
+              <div class="member-tags">
+                <span class="mini-tag">Data</span>
+                <span class="mini-tag">Analytics</span>
+              </div>
+              <a href="carmela.html" class="profile-link">View profile &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Jasver Kour Singh -->
+          <div class="team-card" data-href="jasver.html">
+            <div class="avatar">
+              <img src="jasver.jpeg" alt="Jasver Kour Singh">
+            </div>
+            <div class="team-info">
+              <h3>Jasver Kour Singh</h3>
+              <p class="role">BSIT in Data &amp; Analytics</p>
+              <div class="member-tags">
+                <span class="mini-tag">Data</span>
+                <span class="mini-tag">Analytics</span>
+              </div>
+              <a href="jasver.html" class="profile-link">View profile &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Jonalyn Tumpong -->
+          <div class="team-card" data-href="jonalyn.html">
+            <div class="avatar">
+              <img src="jonalyn.jpeg" alt="Jonalyn Tumpong">
+            </div>
+            <div class="team-info">
+              <h3>Jonalyn Tumpong</h3>
+              <p class="role">BSIT in Network &amp; Cybersecurity</p>
+              <div class="member-tags">
+                <span class="mini-tag">Network</span>
+                <span class="mini-tag">Security</span>
+              </div>
+              <a href="jonalyn.html" class="profile-link">View profile &rarr;</a>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      <!-- Contact Section -->
-      <section id="connect">
-        <div class="section-heading">
-          <h2>Connect with us</h2>
-          <p>For project inquiries or feedback.</p>
+      <!-- Blog / Team Updates Section -->
+      <section id="blog" class="section-container">
+        <h2>Team updates</h2>
+        <p class="section-sub">Use this space for milestones and reflections.</p>
+
+        <div class="card blog-card">
+          <ul class="update-list">
+            <li><strong>Portfolio hub launched</strong> — 2026</li>
+            <li><strong>Next milestone:</strong> add individual projects (Coming soon)</li>
+          </ul>
         </div>
-        <div class="card card-small">
-          <form class="contact-form" action="#" method="post">
+      </section>
+
+      <!-- Connect Section -->
+      <section id="connect" class="section-container">
+        <h2>Connect with us</h2>
+        <p class="section-sub">For project inquiries or feedback.</p>
+
+        <div class="card form-card">
+          <form id="contact-form" action="#" method="POST">
             <div class="form-row">
-              <label>Your name<input type="text" name="name" placeholder="Enter your name"></label>
-              <label>Email address<input type="email" name="email" placeholder="you@example.com"></label>
+              <div class="form-group">
+                <label for="name">Your name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+              </div>
             </div>
-            <label>Message<textarea name="message" rows="4" placeholder="Write your message..."></textarea></label>
-            <button class="button" type="submit">Send message</button>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4" placeholder="Write your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn primary-btn">Send message</button>
           </form>
         </div>
       </section>
 
-      <footer>
-        <p>© 2026 Team Petix. Built as a collaborative student portfolio.</p>
+      <footer class="footer">
+        <p>&copy; 2026 Team Petix. Built as a collaborative student portfolio.</p>
       </footer>
+
     </main>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const navLinks = document.querySelectorAll('.side-nav a');
-      const sections = document.querySelectorAll('section[id]');
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', function () {
-          navLinks.forEach(l => l.classList.remove('active'));
-          this.classList.add('active');
-        });
-      });
-
-      window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          if (window.scrollY >= sectionTop - 150) {
-            current = section.getAttribute('id');
-          }
-        });
-
-        if (current) {
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-              link.classList.add('active');
-            }
-          });
-        }
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
