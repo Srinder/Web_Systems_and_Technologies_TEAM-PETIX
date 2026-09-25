@@ -426,6 +426,54 @@ textarea:focus-visible {
   transform: translateY(-50%) scale(1.08);
 }
 
+/* Standardized Profile Page Styling */
+.profile-copy {
+  display: block;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #667085;
+  font-size: 0.88rem;
+}
+
+.profile-heading {
+  margin: 4px 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.profile-role {
+  margin: 0;
+  color: #f47c20;
+  font-weight: 600;
+}
+
+.profile-section-title {
+  margin-top: 0;
+}
+
+.timeline,
+.project-list,
+.tag-list {
+  margin: 0;
+}
+
+.meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tag-list {
+  padding-left: 1.25rem;
+}
+
+.project-item,
+.timeline-item {
+  margin: 0;
+}
+
 /* Responsive Rules */
 @media (max-width: 900px) { 
   .site-shell { grid-template-columns: 1fr; gap: 18px; padding-top: 16px; }
