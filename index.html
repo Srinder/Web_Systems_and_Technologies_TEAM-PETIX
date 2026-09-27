@@ -24,6 +24,10 @@
         <a href="#members">Team members</a>
         <a href="#blog">Blog</a>
         <a href="#connect">Connect</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <span class="theme-icon" aria-hidden="true">&#9790;</span>
+          <span class="theme-label">Dark mode</span>
+        </button>
       </nav>
     </aside>
 
@@ -46,6 +50,21 @@
         </div>
       </section>
 
+      <section id="stats" class="stats-grid" aria-label="Team Petix at a glance">
+        <div class="stat-item">
+          <span class="stat-number" data-counter="4">0</span>
+          <span class="stat-label">Team members</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-counter="2">0</span>
+          <span class="stat-label">Areas of study</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-counter="5">0</span>
+          <span class="stat-label">Portfolio pages</span>
+        </div>
+      </section>
+
       <!-- Featured Work / Projects Section -->
       <section id="projects" class="section-container">
         <h2>Featured work</h2>
@@ -64,10 +83,16 @@
         <h2>Meet the team</h2>
         <p class="section-sub">Click a profile to see each member's work.</p>
 
+        <div class="filter-controls" role="group" aria-label="Filter team members">
+          <button class="filter-btn is-active" type="button" data-filter="all" aria-pressed="true">All members</button>
+          <button class="filter-btn" type="button" data-filter="analytics" aria-pressed="false">Data &amp; Analytics</button>
+          <button class="filter-btn" type="button" data-filter="cybersecurity" aria-pressed="false">Network &amp; Cybersecurity</button>
+        </div>
+
         <div class="team-grid">
           
           <!-- Srinder Kour Singh -->
-          <div class="team-card" data-href="html/srinder.html">
+          <div class="team-card" data-category="analytics" data-href="html/srinder.html">
             <div class="avatar">
               <img src="assets/images/srinder.jpeg" alt="Srinder Kour Singh">
             </div>
@@ -83,7 +108,7 @@
           </div>
 
           <!-- Ma. Carmela Paula Oreta -->
-          <div class="team-card" data-href="html/carmela.html">
+          <div class="team-card" data-category="analytics" data-href="html/carmela.html">
             <div class="avatar">
               <img src="assets/images/carmela.jpg" alt="Ma. Carmela Paula Oreta">
             </div>
@@ -99,7 +124,7 @@
           </div>
 
           <!-- Jasver Kour Singh -->
-          <div class="team-card" data-href="html/jasver.html">
+          <div class="team-card" data-category="analytics" data-href="html/jasver.html">
             <div class="avatar">
               <img src="assets/images/jasver.jpeg" alt="Jasver Kour Singh">
             </div>
@@ -115,7 +140,7 @@
           </div>
 
           <!-- Jonalyn Tumpong -->
-          <div class="team-card" data-href="html/jonalyn.html">
+          <div class="team-card" data-category="cybersecurity" data-href="html/jonalyn.html">
             <div class="avatar">
               <img src="assets/images/jonalyn.jpeg" alt="Jonalyn Tumpong">
             </div>
@@ -168,6 +193,7 @@
               <textarea id="message" name="message" rows="4" placeholder="Write your message..." required></textarea>
             </div>
             <button type="submit" class="btn primary-btn">Send message</button>
+            <div id="contact-feedback" class="contact-feedback" role="status" aria-live="polite" hidden></div>
           </form>
         </div>
       </section>

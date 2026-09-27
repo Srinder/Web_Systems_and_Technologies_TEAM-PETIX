@@ -25,6 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
+    const feedback = document.getElementById('contact-feedback');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const submitLabel = submitButton.textContent;
+
+    const showFeedback = (message, type) => {
+      feedback.textContent = message;
+      feedback.classList.remove('is-success', 'is-error');
+      feedback.classList.add(`is-${type}`);
+      feedback.hidden = false;
+    };
 
     if (nameInput) {
       nameInput.addEventListener('input', () => {
@@ -38,39 +48,28 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    const responseDiv = document.createElement('div');
-    responseDiv.id = 'form-response';
-    responseDiv.style.display = 'none';
-    responseDiv.style.textAlign = 'center';
-    responseDiv.style.padding = '20px';
-    contactForm.parentNode.appendChild(responseDiv);
+    contactForm.addEventListener('input', () => {
+      feedback.hidden = true;
+      feedback.classList.remove('is-success', 'is-error');
+    });
 
-    const errorDiv = document.createElement('p');
-    errorDiv.id = 'form-error';
-    errorDiv.style.color = '#dc2626';
-    errorDiv.style.fontSize = '0.9rem';
-    errorDiv.style.marginTop = '10px';
-    errorDiv.style.display = 'none';
-    contactForm.appendChild(errorDiv);
-
-    contactForm.addEventListener('submit', (event) => {
+    contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       const name = nameInput ? nameInput.value.trim() : 'User';
       const email = emailInput ? emailInput.value.trim() : '';
       const message = messageInput ? messageInput.value.trim() : '';
 
-      errorDiv.style.display = 'none';
+      feedback.hidden = true;
+      feedback.classList.remove('is-success', 'is-error');
       if (nameInput) nameInput.style.borderColor = '';
       if (emailInput) emailInput.style.borderColor = '';
 
       const namePattern = /^[a-zA-Z\s.-]+$/;
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-      // Validate Name
       if (!namePattern.test(name)) {
-        errorDiv.textContent = 'Please enter a valid name (letters and spaces only, no numbers).';
-        errorDiv.style.display = 'block';
+        showFeedback('Please enter a valid name (letters and spaces only, no numbers).', 'error');
         if (nameInput) {
           nameInput.style.borderColor = '#dc2626';
           nameInput.focus();
@@ -78,10 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Validate Email
       if (!emailPattern.test(email)) {
-        errorDiv.textContent = 'Please enter a valid email address (e.g., name@example.com).';
-        errorDiv.style.display = 'block';
+        showFeedback('Please enter a valid email address (e.g., name@example.com).', 'error');
         if (emailInput) {
           emailInput.style.borderColor = '#dc2626';
           emailInput.focus();
@@ -89,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Confirmation Email
       const templateParams = {
         to_name: name,
         to_email: email,
@@ -97,30 +93,113 @@ document.addEventListener('DOMContentLoaded', () => {
         from_name: 'Team Petix'
       };
 
-      if (typeof emailjs !== 'undefined') {
-        emailjs.send('service_o3vc1j4', 'template_lzpkfcf', templateParams)
-          .then((response) => {
-             console.log('Confirmation email sent successfully!', response.status, response.text);
-          }, (error) => {
-             console.error('Failed to send email...', error);
-          });
-      }
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
 
-      contactForm.style.display = 'none';
-      responseDiv.style.display = 'block';
-      responseDiv.innerHTML = `
-        <h3 style="color: #0d9488; margin-bottom: 10px;">Message Sent Successfully!</h3>
-        <p style="color: #334155; font-size: 1rem; line-height: 1.5; margin-bottom: 15px;">
-          Thank you, <strong>${name}</strong>. Team Petix has received your message and a confirmation email has been dispatched to <strong>${email}</strong>.
-        </p>
-        <button id="reset-form-btn" class="btn primary-btn" style="margin-top: 10px;">Send Another Message</button>
-      `;
+      try {
+        if (typeof emailjs === 'undefined') {
+          throw new Error('The message service is unavailable.');
+        }
 
-      document.getElementById('reset-form-btn').addEventListener('click', () => {
+        await emailjs.send('service_o3vc1j4', 'template_lzpkfcf', templateParams);
+        showFeedback(`Message sent successfully, ${name}. Our team will review your message and follow up at ${email}.`, 'success');
         contactForm.reset();
-        contactForm.style.display = 'block';
-        responseDiv.style.display = 'none';
+      } catch (error) {
+        console.error('Failed to send message.', error);
+        showFeedback('We could not send your message right now. Please try again.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = submitLabel;
+      }
+    });
+  }
+
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeStorageKey = 'teamPetixTheme';
+  let darkMode = false;
+
+  try {
+    darkMode = localStorage.getItem(themeStorageKey) === 'dark';
+  } catch {
+    darkMode = false;
+  }
+
+  const applyTheme = () => {
+    document.body.classList.toggle('dark-mode', darkMode);
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-pressed', String(darkMode));
+      themeToggle.setAttribute('aria-label', `Switch to ${darkMode ? 'light' : 'dark'} mode`);
+      themeToggle.querySelector('.theme-icon').innerHTML = darkMode ? '&#9728;' : '&#9790;';
+      themeToggle.querySelector('.theme-label').textContent = `${darkMode ? 'Light' : 'Dark'} mode`;
+    }
+  };
+
+  applyTheme();
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      darkMode = !darkMode;
+      applyTheme();
+      try {
+        localStorage.setItem(themeStorageKey, darkMode ? 'dark' : 'light');
+      } catch {
+        // Keep the selected theme active for the current page.
+      }
+    });
+  }
+
+  const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
+  const filterCards = Array.from(document.querySelectorAll('.team-card[data-category]'));
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      filterButtons.forEach((item) => {
+        const isActive = item === button;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-pressed', String(isActive));
       });
+
+      filterCards.forEach((card) => {
+        card.hidden = filter !== 'all' && card.dataset.category !== filter;
+      });
+    });
+  });
+
+  const counters = Array.from(document.querySelectorAll('[data-counter]'));
+  const animateCounter = (counter) => {
+    const target = Number(counter.dataset.counter);
+    const duration = 1200;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      counter.textContent = String(target);
+      return;
+    }
+
+    const startTime = performance.now();
+    const updateCounter = (currentTime) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      counter.textContent = String(Math.round(target * progress));
+      if (progress < 1) requestAnimationFrame(updateCounter);
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  if (counters.length && 'IntersectionObserver' in window) {
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    counters.forEach((counter) => counterObserver.observe(counter));
+  } else {
+    counters.forEach((counter) => {
+      counter.textContent = counter.dataset.counter;
     });
   }
 
