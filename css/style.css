@@ -73,7 +73,7 @@ textarea:focus-visible {
   display: flex; 
   justify-content: center; 
 }
-.team-logo { width: 100%; height: auto; display: block; object-fit: contain; border-radius: 18px; }
+.team-banner img { max-width: 100%; width: 100%; height: auto; display: block; object-fit: contain; border-radius: 18px; }
 
 .team-intro h2 { margin: 0 0 4px 0; font-size: 0.68rem; font-weight: 800; color: #ffffff; white-space: nowrap; letter-spacing: -0.03em; }
 .team-intro p { margin: 0; color: #94a3b8; font-size: 0.62rem; font-style: italic; white-space: nowrap; }
@@ -621,7 +621,7 @@ body.dark-mode .contact-feedback.is-error { border-color: #991b1b; background: #
 @media (max-width: 620px) { 
   .team-intro { margin-bottom: 18px; }
   .team-banner { width: min(100%, 140px); margin-bottom: 10px; border-radius: 12px; }
-  .team-logo { border-radius: 12px; }
+  .team-banner img { border-radius: 12px; }
   .form-row { grid-template-columns: 1fr; }
   .hero-card { padding: 24px; }
   .hero-card h1 { font-size: 1.8rem; }
