@@ -44,6 +44,10 @@ This project showcases the Team Petix group through a shared portfolio hub. The 
 2. Open the project folder.
 3. Open `index.html` in your browser to view the homepage.
 
+## Project Documentation & Scope
+For a detailed breakdown of our project targets and mitigation plans, please view our full documentation:
+* 📁 **[Project Scope, SMART Objectives, & Risk Management](./docs/project_documentation.md)**
+
 ## License
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#license)
 This project is intended for academic and portfolio use.

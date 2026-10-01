@@ -87,7 +87,11 @@ textarea:focus-visible {
   font-weight: 650; 
   transition: background 0.2s, color 0.2s; 
 }
-.side-nav a:hover, .side-nav a.active { color: #f47c20; background: rgba(255, 255, 255, 0.15); }
+.side-nav a:hover, 
+.side-nav a.active {
+  color: #ffffff; 
+  background: #b45309;
+}
 
 .theme-toggle {
   display: flex;
@@ -146,7 +150,7 @@ textarea:focus-visible {
 
 .hero-desc {
   font-size: 1.05rem;
-  color: var(--accent);
+  color: var(--ink);
   font-style: italic;
   font-weight: 600; /* Makes the text bolder */
   max-width: 600px;
@@ -333,9 +337,9 @@ textarea:focus-visible {
   font-weight: 700;
 }
 
-.team-info .role {
+.team-card .role {
   margin: 0;
-  color: var(--accent-dark);
+  color: #c2410c;
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -487,6 +491,9 @@ body.dark-mode {
 body.dark-mode .primary-btn { background: #f59e0b; color: #172033; }
 body.dark-mode .primary-btn:hover { background: #fb923c; color: #172033; }
 body.dark-mode .profile-hero .avatar { border-color: var(--surface); }
+body.dark-mode .team-card .role { color: var(--accent-dark); }
+body.dark-mode .eyebrow,
+body.dark-mode .mini-tag { color: #cbd5e1; }
 body.dark-mode .form-group input:focus,
 body.dark-mode .form-group textarea:focus { background: var(--input-surface); }
 body.dark-mode .contact-feedback.is-success { border-color: #0f766e; background: #042f2e; color: #99f6e4; }
@@ -579,9 +586,11 @@ body.dark-mode .contact-feedback.is-error { border-color: #991b1b; background: #
 
 .profile-role {
   margin: 0;
-  color: #f47c20;
+  color: #c2410c;
   font-weight: 600;
 }
+
+body.dark-mode .profile-role { color: var(--accent-dark); }
 
 .profile-section-title {
   margin-top: 0;
@@ -612,7 +621,7 @@ body.dark-mode .contact-feedback.is-error { border-color: #991b1b; background: #
 @media (max-width: 900px) { 
   .site-shell { grid-template-columns: minmax(0, 1fr); gap: 18px; padding-top: 16px; }
   .sidebar { position: static; height: auto; padding: 16px; }
-  .side-nav { display: flex; overflow-x: auto; padding-top: 14px; }
+  .side-nav { display: flex !important; overflow-x: auto; padding-top: 14px; }
   .side-nav a { white-space: nowrap; }
   .theme-toggle { width: auto; min-width: max-content; margin-top: 0; white-space: nowrap; }
   .team-grid { grid-template-columns: 1fr; }
@@ -658,7 +667,7 @@ body.dark-mode .contact-feedback.is-error { border-color: #991b1b; background: #
 }
 
 /* For smaller mobile phones (below 600px) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .team-grid {
     grid-template-columns: 1fr; /* Switch team cards to a single column on phones */
   }
@@ -666,4 +675,41 @@ body.dark-mode .contact-feedback.is-error { border-color: #991b1b; background: #
   .form-row {
     flex-direction: column;
   }
+}
+
+.side-nav { 
+  display: grid; 
+  gap: 6px; 
+  padding-top: 20px; 
+  border-top: 1px solid rgba(255, 255, 255, 0.12); 
+}
+
+.side-nav a { 
+  padding: 10px 12px; 
+  border-radius: 10px; 
+  color: #ffffff; 
+  font-size: .92rem; 
+  font-weight: 650; 
+  transition: background 0.2s, color 0.2s; 
+}
+
+.side-nav a:hover, 
+.side-nav a.active {
+  color: #ffffff; 
+  background: #b45309;
+}
+
+/* Added for Keyboard Accessibility  Requirement */
+.side-nav a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.side-nav button:focus-visible {
+  outline: 3px solid #f47c20;
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .content { padding: 0; }
 }

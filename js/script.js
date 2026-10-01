@@ -1,5 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  const sectionNavLinks = Array.from(document.querySelectorAll('.side-nav a[href^="#"]'));
+  const setActiveSectionLink = (activeLink) => {
+    sectionNavLinks.forEach((link) => {
+      const isActive = link === activeLink;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  sectionNavLinks.forEach((link) => {
+    link.addEventListener('click', () => setActiveSectionLink(link));
+  });
+
+  const syncActiveSectionLink = () => {
+    const activeLink = sectionNavLinks.find((link) => link.hash === window.location.hash);
+    if (activeLink) setActiveSectionLink(activeLink);
+  };
+
+  window.addEventListener('hashchange', syncActiveSectionLink);
+  syncActiveSectionLink();
+
   if (typeof emailjs !== 'undefined') {
     emailjs.init('5E7cMI8TTdzpkP5Sz');
   }
