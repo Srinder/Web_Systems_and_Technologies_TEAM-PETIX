@@ -19,7 +19,12 @@ The server listens on port `3001` and serves the site at [http://localhost:3001/
 
 The repository-root `vercel.json` publishes `frontend/` and configures the root `api/feedback.js` Vercel Function to include `backend/feedback.json`. Vercel maps this function to `/api/feedback`; the function entrypoint reuses the Express app from `backend/server.js`. The local `app.listen()` runs only when `backend/server.js` is executed directly outside production, and uses `PORT` when provided.
 
-`backend/feedback.json` is suitable for local demos, but a serverless deployment does not provide reliable persistent writes to an application JSON file. Use a managed database or another persistent storage service before relying on feedback submissions in production.
+For persistent feedback on Vercel, create an Upstash Redis database and add these environment variables in the Vercel project settings:
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+Set the variables for Production and any Preview environments you use, then redeploy. The server uses the Upstash REST API directly. When the Redis key is empty, `backend/feedback.json` seeds it once. If these variables are absent, local development uses the JSON file; production returns HTTP `503` instead of attempting a non-persistent file write.
 
 ## API Routes
 
@@ -66,9 +71,9 @@ When a visitor submits the form, the browser trims the values and checks require
 
 ## Data and Limitations
 
-Reviews are stored in `backend/feedback.json`. The file is tracked and includes starter feedback, so new submissions modify a tracked file. Avoid adding private or identifying client information to this demonstration data, and review changes to the file before committing.
+Local reviews are stored in the tracked `backend/feedback.json` file. New local submissions modify that file, so avoid adding private or identifying client information and review changes before committing. On Vercel, reviews are stored in Upstash Redis; the JSON file is only the initial seed because serverless files are not durable writable storage.
 
-The current implementation uses synchronous local file reads and writes. It does not use a database, authentication, moderation, or rate limiting, and its validation is intentionally basic. These choices are suitable for demonstrating the feature locally, but should be revisited before using the API publicly.
+The local fallback uses synchronous file reads and writes. The API does not include authentication, moderation, or rate limiting, so submissions should be reviewed before being presented publicly.
 
 ## Development Checks
 

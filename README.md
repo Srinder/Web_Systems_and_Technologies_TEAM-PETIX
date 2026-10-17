@@ -39,7 +39,7 @@ This project showcases the Team Petix group through a shared portfolio hub. The 
 
 - **Frontend:** HTML5, CSS3, Responsive Grid & Flexbox, Web Accessibility Standards (WCAG / ARIA live regions)
 - **Backend:** Node.js, Express.js (`backend/server.js`)
-- **Data Persistence:** JSON-based local server storage (`backend/feedback.json`)
+- **Data Persistence:** Local JSON storage for development and Upstash Redis for Vercel deployments
 - **API Endpoints:** 
   - `GET /api/feedback` (Retrieves stored testimonials in newest-first order)
   - `POST /api/feedback` (Validates input rules and persists new review submissions)
@@ -59,7 +59,9 @@ See the [Backend Development Guide](./docs/backend_development.md) for API endpo
 
 ## Deploy to Vercel
 
-The root `vercel.json` publishes `frontend/` and traces `backend/feedback.json` for the Vercel Function at `api/feedback.js`. Vercel maps that function to `/api/feedback`; connect this GitHub repository to deploy updates from the configured branch. The current JSON-file feedback storage is for local development; use a persistent database before relying on public submissions in a serverless deployment.
+The root `vercel.json` publishes `frontend/` and traces `backend/feedback.json` for the Vercel Function at `api/feedback.js`. Vercel maps that function to `/api/feedback`; connect this GitHub repository to deploy updates from the configured branch.
+
+For saved testimonials on Vercel, create an Upstash Redis database and add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to the Vercel project's Environment Variables. Set them for the environments you deploy and redeploy. The existing `backend/feedback.json` is used locally and seeds Redis when its key is first initialized.
 
 
 ## Repository Layout
