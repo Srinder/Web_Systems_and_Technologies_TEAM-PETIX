@@ -35,30 +35,49 @@ app.get('/api/feedback', (req, res) => {
 
 // POST endpoint for Testimonial / Feedback submission with persistence
 app.post('/api/feedback', (req, res) => {
-    const { clientName, projectType, rating, feedback } = req.body;
+    const { clientName, projectType, rating, feedback } = req.body || {};
+    const normalizedClientName = typeof clientName === 'string' ? clientName.trim() : '';
+    const normalizedFeedback = typeof feedback === 'string' ? feedback.trim() : '';
+    const normalizedProjectType = typeof projectType === 'string' ? projectType.trim() : '';
 
-    // Server-side Validation
-    if (!clientName || !rating || !feedback) {
+    if (!normalizedClientName || normalizedClientName.length > 100) {
         return res.status(400).json({
             success: false,
-            message: 'Please provide your name, a rating, and your feedback.'
+            message: 'Client name is required and must be 100 characters or fewer.'
         });
     }
 
-    const numericRating = Number(rating);
-    if (numericRating < 1 || numericRating > 5) {
+    if (projectType !== undefined && typeof projectType !== 'string') {
+        return res.status(400).json({ success: false, message: 'Project or service must be text.' });
+    }
+
+    if (normalizedProjectType.length > 120) {
+        return res.status(400).json({ success: false, message: 'Project or service must be 120 characters or fewer.' });
+    }
+
+    if (!normalizedFeedback || normalizedFeedback.length > 2000) {
         return res.status(400).json({
             success: false,
-            message: 'Rating must be between 1 and 5 stars.'
+            message: 'Feedback is required and must be 2,000 characters or fewer.'
+        });
+    }
+
+    const ratingValue = typeof rating === 'string' ? rating.trim() : rating;
+    const numericRating = Number(ratingValue);
+    if ((typeof ratingValue !== 'number' && typeof ratingValue !== 'string') ||
+        ratingValue === '' || !Number.isInteger(numericRating) || numericRating < 1 || numericRating > 5) {
+        return res.status(400).json({
+            success: false,
+            message: 'Rating must be a whole number from 1 to 5.'
         });
     }
 
     const newEntry = {
         id: Date.now(),
-        clientName: clientName.trim(),
-        projectType: projectType ? projectType.trim() : 'General Portfolio',
+        clientName: normalizedClientName,
+        projectType: normalizedProjectType || 'General Portfolio',
         rating: numericRating,
-        feedback: feedback.trim(),
+        feedback: normalizedFeedback,
         date: new Date().toISOString()
     };
 

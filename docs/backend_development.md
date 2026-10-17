@@ -1,21 +1,23 @@
 # Backend Development Guide
 
-## Run Locally
+This guide describes the Express backend that supports the portfolio's client feedback feature. It is a small local backend built as part of our student project, so the examples focus on running and understanding the current implementation.
 
-The Express backend, package manifests, and feedback data file are in the repository root. From that directory, install dependencies and start the server:
+## Run the Server
+
+Use Node.js 18 or later. From the repository root, install the dependencies and start the server:
 
 ```sh
 npm install
 node server.js
 ```
 
-The server listens on port `3001` and serves the portfolio at `http://localhost:3001/`. The feedback form uses same-origin API requests, so run this server rather than opening `index.html` directly when testing submissions.
+The server listens on port `3001` and serves the site at [http://localhost:3001/](http://localhost:3001/). Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
 
-## API
+## API Routes
 
 ### `GET /api/feedback`
 
-Returns all saved testimonials, newest first:
+Returns saved reviews in newest-first order:
 
 ```json
 {
@@ -24,9 +26,11 @@ Returns all saved testimonials, newest first:
 }
 ```
 
+Each item in `data` includes an `id`, `clientName`, `projectType`, `rating`, `feedback`, and ISO-formatted `date`.
+
 ### `POST /api/feedback`
 
-Accepts a JSON request with the following fields:
+Send a JSON body with the review details:
 
 ```json
 {
@@ -37,12 +41,33 @@ Accepts a JSON request with the following fields:
 }
 ```
 
-`clientName`, `rating`, and `feedback` are required. `rating` must be between 1 and 5. `projectType` is optional and defaults to `General Portfolio`. A successful submission returns HTTP `201` with the saved entry; invalid required fields or an out-of-range rating return HTTP `400` with a message.
+The server validates every request independently of browser-side checks:
 
-Saved entries include an ID and ISO timestamp. The frontend renders returned text as text content and updates its testimonial list and average rating after submission.
+- `clientName` must be a non-empty string after trimming and no longer than 100 characters.
+- `projectType` may be omitted or empty; otherwise it must be a string no longer than 120 characters. An omitted or empty value is saved as `General Portfolio`.
+- `rating` must be a whole number from 1 through 5. Numeric strings are accepted for form-encoded requests; decimals and other types are rejected.
+- `feedback` must be a non-empty string after trimming and no longer than 2,000 characters.
 
-## Persistence and Development Notes
+Invalid input returns HTTP `400` with `{ "success": false, "message": "..." }`. A valid request returns HTTP `201`, a confirmation message, and the saved review in `data`.
 
-The server stores entries in the repository-root `feedback.json`. This file is included in the repository and currently contains one review. New submissions update the file; review those changes before committing because the data is tracked. This is local JSON-file storage, not a database, and the server currently reads and writes the file synchronously.
+## How the Frontend Uses the API
 
-The root `package.json` currently has no automated test suite configured. When extending the API, validate both successful and invalid requests. For a deployed or multi-user backend, add stronger input validation, moderation/rate limiting, and a database-backed persistence layer.
+On page load, the browser calls `GET /api/feedback`. The response contains the complete review list in `data`; the page initially renders only the first five to keep the section compact. When more than five exist, the Show More / Show Less control reveals or collapses the remaining cards. The average rating is calculated from all valid reviews in `data`, not just the five currently visible.
+
+When a visitor submits the form, the browser trims the values and checks required fields, the rating range, and field lengths before sending `POST /api/feedback`. The server repeats validation because requests can bypass the browser. On HTTP `201`, the frontend adds the returned `data` item, recalculates the average, refreshes the feed, and announces the response message without reloading the page. On an error response, it announces the returned message in the form's live status region.
+
+## Data and Limitations
+
+Reviews are stored in the repository-root `feedback.json` file. The file is tracked and includes starter feedback, so new submissions modify a tracked file. Avoid adding private or identifying client information to this demonstration data, and review changes to the file before committing.
+
+The current implementation uses synchronous local file reads and writes. It does not use a database, authentication, moderation, or rate limiting, and its validation is intentionally basic. These choices are suitable for demonstrating the feature locally, but should be revisited before using the API publicly.
+
+## Development Checks
+
+The `test` script in `package.json` is still a placeholder; there is no automated test suite configured yet. After changing the server, run a syntax check with:
+
+```sh
+node --check server.js
+```
+
+Then start the server and check `GET /api/feedback` in a browser or API client. When testing `POST /api/feedback`, remember that a successful request writes to `feedback.json`.
