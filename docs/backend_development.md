@@ -15,6 +15,10 @@ The server listens on port `3001`, serves `frontend/` at [http://localhost:3001/
 
 When using Live Server to preview `frontend/`, leave this Express server running as well. The frontend directs local Live Server API calls to port `3001` and the backend allows requests from localhost origins.
 
+## Vercel Feedback Read Route
+
+The root `vercel.json` publishes `frontend/` and includes `backend/feedback.json` for the Vercel function in `api/feedback.js`. That function serves `GET /api/feedback`, returning the saved review array or an empty array if the data file cannot be read. It returns HTTP `503` for `POST` because Vercel's deployed file system is not persistent storage. Online submissions require a managed datastore; local submissions continue through Express and update `backend/feedback.json`.
+
 ## API Routes
 
 ### `GET /api/feedback`

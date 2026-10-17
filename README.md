@@ -58,9 +58,9 @@ If you preview the frontend with Live Server, keep the Express server running to
 
 See the [Backend Development Guide](./docs/backend_development.md) for API endpoints, validation logic, and local storage behavior.
 
-## Deploy the Static Site to Vercel
+## Deploy to Vercel
 
-The root `vercel.json` sets `frontend/` as the deployment output, so its `index.html` becomes the site landing page. The Express feedback API in `backend/` is for local development and is not deployed by this static-site configuration.
+The root `vercel.json` publishes `frontend/` so its `index.html` is the landing page. It also includes `backend/feedback.json` in the root `api/feedback.js` function so the testimonials feed can load on Vercel. Online feedback submissions return a clear unavailable message until persistent cloud storage is configured; local submissions continue using `backend/feedback.json` through Express.
 
 ## Repository Layout
 
