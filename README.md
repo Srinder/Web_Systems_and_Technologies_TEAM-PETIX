@@ -28,6 +28,7 @@ This project showcases the Team Petix group through a shared portfolio hub. The 
 - `frontend/css/style.css` shared styles and responsive layout
 - `frontend/js/script.js` frontend interactions and API requests
 - `frontend/assets/` favicon and team/member images
+- `api/feedback.js` Vercel Function entry point for feedback requests
 - `backend/server.js` Express server and feedback API
 - `backend/feedback.json` local testimonial data
 - `backend/package.json` and `backend/package-lock.json` backend dependencies
@@ -58,12 +59,13 @@ See the [Backend Development Guide](./docs/backend_development.md) for API endpo
 
 ## Deploy to Vercel
 
-The root `vercel.json` publishes `frontend/` and rewrites `/api/*` requests to the Express app in `backend/server.js`. Connect this GitHub repository to Vercel to deploy updates from the configured branch. The current JSON-file feedback storage is for local development; use a persistent database before relying on public submissions in a serverless deployment.
+The root `vercel.json` publishes `frontend/` and traces `backend/feedback.json` for the Vercel Function at `api/feedback.js`. Vercel maps that function to `/api/feedback`; connect this GitHub repository to deploy updates from the configured branch. The current JSON-file feedback storage is for local development; use a persistent database before relying on public submissions in a serverless deployment.
 
 
 ## Repository Layout
 
 ```text
+api/                  Vercel Function entry point
 backend/             Express API, dependencies, and feedback data
 frontend/            Homepage, profiles, styles, scripts, and assets
 docs/                Project and backend documentation

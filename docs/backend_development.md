@@ -15,7 +15,7 @@ The server listens on port `3001` and serves the site at [http://localhost:3001/
 
 ## Vercel Deployment
 
-The repository-root `vercel.json` publishes `frontend/` and rewrites `/api/*` requests to `backend/server.js`. The Express app is exported for the serverless runtime. Its local `app.listen()` call runs only when `NODE_ENV` is not `production`, and uses `PORT` when provided.
+The repository-root `vercel.json` publishes `frontend/` and configures the root `api/feedback.js` Vercel Function to include `backend/feedback.json`. Vercel maps this function to `/api/feedback`; the function entrypoint reuses the Express app from `backend/server.js`. The local `app.listen()` runs only when `backend/server.js` is executed directly outside production, and uses `PORT` when provided.
 
 `backend/feedback.json` is suitable for local demos, but a serverless deployment does not provide reliable persistent writes to an application JSON file. Use a managed database or another persistent storage service before relying on feedback submissions in production.
 
