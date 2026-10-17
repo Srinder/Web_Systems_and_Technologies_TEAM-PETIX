@@ -14,39 +14,50 @@ A collaborative student portfolio website created as a web system and technologi
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#project-overview)
 This project showcases the Team Petix group through a shared portfolio hub. The website includes:
 
-- a team homepage
-- featured project sections
+- a team homepage with individual developer project spotlights
+- featured project sections (including individual deployment showcases)
 - member profile cards
 - update and milestone content
-- a contact section for inquiries or feedback
+- a persistent client testimonials and feedback system with real-time API rendering
 
 ## Website Structure
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#website-structure)
 
-- `index.html` - main homepage for the team
-- `html/` - individual member profile pages
-- `css/style.css` - complete styling and responsive layout
-- `js/script.js` - interactive behavior
-- `assets/images/` - team logo and member photos
+- `index.html` main homepage for the team with advanced interactive components
+- `html/` individual member profile pages
+- `css/style.css` complete styling and responsive layout
+- `js/script.js` interactive behavior, live feedback feed fetching, and progressive disclosure
+- `server.js` Node.js / Express backend server handling API routes and persistence
+- `feedback.json` local persistent storage file for client testimonials
+- `assets/images/` team logo, preview assets, and member photos
 
-## Technologies Used
+## Technologies & Backend Stack Used
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#technologies-used)
 
-- HTML5
-- CSS3
-- Responsive web design (Grid & Flexbox)
-- Web Accessibility Standards (WCAG)
+- **Frontend:** HTML5, CSS3, Responsive Grid & Flexbox, Web Accessibility Standards (WCAG / ARIA live regions)
+- **Backend:** Node.js, Express.js (`server.js`)
+- **Data Persistence:** JSON-based local server storage (`feedback.json`)
+- **API Endpoints:**
+  - `GET /api/feedback` (Retrieves stored testimonials)
+  - `POST /api/feedback` (Validates and persists new review submissions)
 
 ## How to Run
-[](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#how-to-run)
 
-1. Clone or download this repository.
-2. Open the project folder.
-3. Open `index.html` in your browser to view the homepage.
+The application includes an Express backend for client testimonials and persistent data storage. Run these commands from the repository root:
+
+```sh
+npm install
+node server.js
+```
+
+Then visit `http://localhost:3001/`. The API and frontend are served from the same origin, so run the Express server when testing testimonial submissions.
+
+See the [Backend Development Guide](./docs/backend_development.md) for API details and local data storage behavior.
 
 ## Project Documentation & Scope
 For a detailed breakdown of our project targets and mitigation plans, please view our full documentation:
 * 📁 **[Project Scope, SMART Objectives, & Risk Management](./docs/project_documentation.md)**
+* **[Backend Development Guide](./docs/backend_development.md)**
 
 ## License
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#license)
