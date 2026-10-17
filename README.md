@@ -58,9 +58,6 @@ If you preview the frontend with Live Server, keep the Express server running to
 
 See the [Backend Development Guide](./docs/backend_development.md) for API endpoints, validation logic, and local storage behavior.
 
-## Deploy to Vercel
-
-The root `vercel.json` publishes `frontend/` so its `index.html` is the landing page and includes `backend/feedback.json` in the Vercel function. To save online submissions, create an Upstash Redis database and add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to the Vercel project's Environment Variables, then redeploy. The JSON file seeds Redis on first use. Without those variables, reviews remain readable but online submissions return a setup message.
 
 ## Repository Layout
 
