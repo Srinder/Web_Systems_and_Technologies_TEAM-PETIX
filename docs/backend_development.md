@@ -4,14 +4,16 @@ This guide describes the Express backend that supports the portfolio's client fe
 
 ## Run the Server
 
-Use Node.js 18 or later. From the repository root, install dependencies and start the local server:
+Use Node.js 18 or later. From the repository root, install backend dependencies and start the local server:
 
 ```sh
-npm install
-node server.js
+npm --prefix backend install
+node backend/server.js
 ```
 
-The server listens on port `3001`, serves the site at [http://localhost:3001/](http://localhost:3001/), and stores feedback in the root `feedback.json` file. Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
+The server listens on port `3001`, serves `frontend/` at [http://localhost:3001/](http://localhost:3001/), and stores feedback in `backend/feedback.json`. Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
+
+When using Live Server to preview `frontend/`, leave this Express server running as well. The frontend directs local Live Server API calls to port `3001` and the backend allows requests from localhost origins.
 
 ## API Routes
 
@@ -52,22 +54,22 @@ Invalid input returns HTTP `400` with `{ "success": false, "message": "..." }`. 
 
 ## How the Frontend Uses the API
 
-The browser code lives in `js/script.js`. On page load, it calls `GET /api/feedback`. The response contains the complete review list in `data`; the page initially renders only the first five to keep the section compact. When more than five exist, the Show More / Show Less control reveals or collapses the remaining cards. The average rating is calculated from all valid reviews in `data`, not just the five currently visible.
+The browser code lives in `frontend/js/script.js`. On page load, it calls `GET /api/feedback`. The response contains the complete review list in `data`; the page initially renders only the first five to keep the section compact. When more than five exist, the Show More / Show Less control reveals or collapses the remaining cards. The average rating is calculated from all valid reviews in `data`, not just the five currently visible.
 
 When a visitor submits the form, the browser trims the values and checks required fields, the rating range, and field lengths before sending `POST /api/feedback`. The server repeats validation because requests can bypass the browser. On HTTP `201`, the frontend adds the returned `data` item, recalculates the average, refreshes the feed, and announces the response message without reloading the page. On an error response, it announces the returned message in the form's live status region.
 
 ## Data and Limitations
 
-Reviews are stored in the tracked root `feedback.json` file. New submissions modify that file, so avoid adding private or identifying client information and review changes before committing.
+Reviews are stored in the tracked `backend/feedback.json` file. New submissions modify that file, so avoid adding private or identifying client information and review changes before committing.
 
 The backend uses synchronous local file reads and writes. The API does not include authentication, moderation, or rate limiting, so submissions should be reviewed before being presented publicly.
 
 ## Development Checks
 
-The `test` script in `package.json` is still a placeholder; there is no automated test suite configured yet. After changing the server, run a syntax check from the repository root with:
+The `test` script in `backend/package.json` is still a placeholder; there is no automated test suite configured yet. After changing the server, run a syntax check from the repository root with:
 
 ```sh
-node --check server.js
+node --check backend/server.js
 ```
 
-Then start the server and check `GET /api/feedback` in a browser or API client. When testing `POST /api/feedback`, remember that a successful request writes to `feedback.json`.
+Then start the server and check `GET /api/feedback` in a browser or API client. When testing `POST /api/feedback`, remember that a successful request writes to `backend/feedback.json`.

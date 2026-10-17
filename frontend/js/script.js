@@ -143,6 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const testimonialList = document.getElementById('testimonial-list');
   const testimonialToggle = document.getElementById('testimonial-toggle');
   const testimonialSummary = document.getElementById('testimonial-summary');
+  const isLocalFrontend = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+  const feedbackApiUrl = isLocalFrontend && window.location.port !== '3001'
+    ? 'http://localhost:3001/api/feedback'
+    : '/api/feedback';
 
   if (testimonialForm && testimonialList && testimonialToggle && testimonialSummary) {
     const testimonialStatus = document.getElementById('testimonial-status');
@@ -245,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchTestimonials = async () => {
       try {
-        const response = await fetch('/api/feedback');
+        const response = await fetch(feedbackApiUrl);
         const result = await response.json();
         if (!response.ok || !result.success || !Array.isArray(result.data)) {
           throw new Error('Unable to load testimonials.');
@@ -302,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.textContent = 'Submitting...';
 
       try {
-        const response = await fetch('/api/feedback', {
+        const response = await fetch(feedbackApiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(testimonial)
