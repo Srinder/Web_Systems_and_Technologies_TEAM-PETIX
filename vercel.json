@@ -1,9 +1,0 @@
-{
-  "outputDirectory": "frontend",
-  "installCommand": "npm install",
-  "functions": {
-    "api/feedback.js": {
-      "includeFiles": "backend/feedback.json"
-    }
-  }
-}

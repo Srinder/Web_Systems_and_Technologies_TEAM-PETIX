@@ -4,27 +4,14 @@ This guide describes the Express backend that supports the portfolio's client fe
 
 ## Run the Server
 
-Use Node.js 18 or later. From the repository root, install dependencies and start the server:
+Use Node.js 18 or later. From the repository root, install dependencies and start the local server:
 
 ```sh
 npm install
-node backend/server.js
+node server.js
 ```
 
-The root `package.json` declares Express for Vercel's root-level `api/feedback.js` function. `backend/package.json` remains alongside the server for backend-local development.
-
-The server listens on port `3001` and serves the site at [http://localhost:3001/](http://localhost:3001/). Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
-
-## Vercel Deployment
-
-The repository-root `vercel.json` publishes `frontend/` and configures the root `api/feedback.js` Vercel Function to include `backend/feedback.json`. Vercel maps this function to `/api/feedback`; the function entrypoint reuses the Express app from `backend/server.js`. The local `app.listen()` runs only when `backend/server.js` is executed directly outside production, and uses `PORT` when provided.
-
-For persistent feedback on Vercel, create an Upstash Redis database and add these environment variables in the Vercel project settings:
-
-- `UPSTASH_REDIS_REST_URL`
-- `UPSTASH_REDIS_REST_TOKEN`
-
-Set the variables for Production and any Preview environments you use, then redeploy. The server uses the Upstash REST API directly. When the Redis key is empty, `backend/feedback.json` seeds it once. If these variables are absent, local development uses the JSON file; production returns HTTP `503` instead of attempting a non-persistent file write.
+The server listens on port `3001`, serves the site at [http://localhost:3001/](http://localhost:3001/), and stores feedback in the root `feedback.json` file. Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
 
 ## API Routes
 
@@ -65,22 +52,22 @@ Invalid input returns HTTP `400` with `{ "success": false, "message": "..." }`. 
 
 ## How the Frontend Uses the API
 
-The browser code lives in `frontend/js/script.js`. On page load, it calls `GET /api/feedback`. The response contains the complete review list in `data`; the page initially renders only the first five to keep the section compact. When more than five exist, the Show More / Show Less control reveals or collapses the remaining cards. The average rating is calculated from all valid reviews in `data`, not just the five currently visible.
+The browser code lives in `js/script.js`. On page load, it calls `GET /api/feedback`. The response contains the complete review list in `data`; the page initially renders only the first five to keep the section compact. When more than five exist, the Show More / Show Less control reveals or collapses the remaining cards. The average rating is calculated from all valid reviews in `data`, not just the five currently visible.
 
 When a visitor submits the form, the browser trims the values and checks required fields, the rating range, and field lengths before sending `POST /api/feedback`. The server repeats validation because requests can bypass the browser. On HTTP `201`, the frontend adds the returned `data` item, recalculates the average, refreshes the feed, and announces the response message without reloading the page. On an error response, it announces the returned message in the form's live status region.
 
 ## Data and Limitations
 
-Local reviews are stored in the tracked `backend/feedback.json` file. New local submissions modify that file, so avoid adding private or identifying client information and review changes before committing. On Vercel, reviews are stored in Upstash Redis; the JSON file is only the initial seed because serverless files are not durable writable storage.
+Reviews are stored in the tracked root `feedback.json` file. New submissions modify that file, so avoid adding private or identifying client information and review changes before committing.
 
-The local fallback uses synchronous file reads and writes. The API does not include authentication, moderation, or rate limiting, so submissions should be reviewed before being presented publicly.
+The backend uses synchronous local file reads and writes. The API does not include authentication, moderation, or rate limiting, so submissions should be reviewed before being presented publicly.
 
 ## Development Checks
 
-The `test` script in `backend/package.json` is still a placeholder; there is no automated test suite configured yet. After changing the server, run a syntax check from the repository root with:
+The `test` script in `package.json` is still a placeholder; there is no automated test suite configured yet. After changing the server, run a syntax check from the repository root with:
 
 ```sh
-node --check backend/server.js
+node --check server.js
 ```
 
-Then start the server and check `GET /api/feedback` in a browser or API client. When testing `POST /api/feedback`, remember that a successful request writes to `backend/feedback.json`.
+Then start the server and check `GET /api/feedback` in a browser or API client. When testing `POST /api/feedback`, remember that a successful request writes to `feedback.json`.
