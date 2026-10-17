@@ -249,16 +249,71 @@ textarea:focus-visible {
 .team-card[hidden] { display: none; }
 
 /* Featured Work / Project Card */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-start;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.project-badge {
+  align-self: flex-start;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--tag-surface);
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.individual-project-badge {
+  background: var(--soft-accent);
+  color: var(--accent-dark);
 }
 
 .project-icon {
+  align-self: flex-start;
   font-size: 1.5rem;
   color: var(--accent);
+}
+
+.project-preview {
+  display: flex;
+  align-items: flex-end;
+  width: min(100%, 300px);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  background-color: #17233d;
+  background-image: linear-gradient(135deg, rgba(23, 35, 61, 0.46), rgba(180, 83, 9, 0.56)), url("https://wings-and-chops-business-proposal.vercel.app/images/hero-wings.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.project-preview-mark {
+  padding: 12px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+
+.project-credit { font-size: 0.9rem; }
+.project-credit strong { color: var(--ink); }
+
+.project-card > .text-link,
+.project-action {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .project-card h3 {
@@ -464,6 +519,125 @@ textarea:focus-visible {
   opacity: 0.72;
 }
 
+.rating-group {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rating-group legend {
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.rating-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rating-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.rating-options input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent-dark);
+}
+
+#testimonial-form .primary-btn:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.testimonial-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.testimonial-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.testimonial-summary strong { color: var(--ink); }
+
+.testimonial-summary-stars {
+  color: var(--accent-dark);
+  font-size: 1.1rem;
+}
+
+.testimonial-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.testimonial-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.testimonial-project,
+.testimonial-card time {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.testimonial-project { margin: 2px 0 8px; }
+
+.testimonial-rating {
+  margin: 0 0 8px;
+  color: var(--accent-dark);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+}
+
+.testimonial-card blockquote {
+  margin: 0 0 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.testimonial-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  text-align: center;
+}
+
+.testimonial-toggle {
+  margin-top: 14px;
+  font-family: inherit;
+}
+
+.testimonial-toggle[hidden] { display: none; }
+
 @keyframes contact-feedback-enter {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -602,6 +776,18 @@ body.dark-mode .profile-role { color: var(--accent-dark); }
   margin: 0;
 }
 
+.project-list { display: grid; gap: 18px; }
+
+.profile-project-spotlight {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
 .meta {
   margin: 0;
   color: var(--muted);
@@ -628,6 +814,7 @@ body.dark-mode .profile-role { color: var(--accent-dark); }
 }
 
 @media (max-width: 620px) { 
+  .projects-grid { grid-template-columns: 1fr; }
   .team-intro { margin-bottom: 18px; }
   .team-banner { width: min(100%, 140px); margin-bottom: 10px; border-radius: 12px; }
   .team-banner img { border-radius: 12px; }

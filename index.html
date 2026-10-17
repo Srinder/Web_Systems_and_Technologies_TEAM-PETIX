@@ -25,6 +25,7 @@
         <a href="#projects">Projects</a>
         <a href="#members">Team members</a>
         <a href="#blog">Blog</a>
+        <a href="#testimonials">Testimonials</a>
         <a href="#connect">Connect</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
           <span class="theme-icon" aria-hidden="true">&#9790;</span>
@@ -69,14 +70,28 @@
 
       <!-- Featured Work / Projects Section -->
       <section id="projects" class="section-container">
-        <h2>Featured work</h2>
+        <h2>Featured Projects</h2>
         <p class="section-sub">What we are learning and building.</p>
 
-        <div class="card project-card">
-          <div class="project-icon">&#x25EB;</div>
-          <h3>Team Portfolio Hub</h3>
-          <p>Our shared web space for presenting projects, progress, and individual contributions.</p>
-          <a href="#members" class="text-link">View our profiles &rarr;</a>
+        <div class="projects-grid">
+          <article class="card project-card team-project-card">
+            <span class="project-badge">Team Project</span>
+            <div class="project-icon">&#x25EB;</div>
+            <h3>Team Portfolio Hub</h3>
+            <p>Our shared web space for presenting projects, progress, and individual contributions.</p>
+            <a href="#members" class="text-link">View our profiles &rarr;</a>
+          </article>
+
+          <article class="card project-card featured-project-card">
+            <div class="project-preview" role="img" aria-label="Wings and Chops website preview">
+              <span class="project-preview-mark" aria-hidden="true">W&amp;C</span>
+            </div>
+            <span class="project-badge individual-project-badge">Individual Contribution</span>
+            <h3>Wings and Chops</h3>
+            <p class="project-credit">Developed by <strong>Srinder Kour Singh</strong></p>
+            <p>A business proposal and franchise presentation for the Wings &amp; Chops brand.</p>
+            <a href="https://wings-and-chops-business-proposal.vercel.app/" class="btn primary-btn project-action" target="_blank" rel="noopener noreferrer">View project &rarr;</a>
+          </article>
         </div>
       </section>
 
@@ -171,6 +186,47 @@
             <li><strong>Next milestone:</strong> add individual projects (Coming soon)</li>
           </ul>
         </div>
+      </section>
+
+      <!-- Client Testimonials Section -->
+      <section id="testimonials" class="section-container">
+        <h2>Client testimonials</h2>
+        <p class="section-sub">Share feedback about a project or service.</p>
+        <div id="testimonial-summary" class="testimonial-summary" role="status" aria-live="polite" aria-atomic="true"></div>
+
+        <div class="card form-card">
+          <form id="testimonial-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="testimonial-name">Client name</label>
+                <input type="text" id="testimonial-name" name="clientName" autocomplete="name" maxlength="100" required>
+              </div>
+              <div class="form-group">
+                <label for="testimonial-project">Project or service evaluated</label>
+                <input type="text" id="testimonial-project" name="projectType" maxlength="120" required>
+              </div>
+            </div>
+            <fieldset class="form-group rating-group">
+              <legend>Star rating</legend>
+              <div class="rating-options" role="radiogroup" aria-label="Star rating from 1 to 5">
+                <label><input type="radio" name="rating" value="1" required><span>1 star</span></label>
+                <label><input type="radio" name="rating" value="2"><span>2 stars</span></label>
+                <label><input type="radio" name="rating" value="3"><span>3 stars</span></label>
+                <label><input type="radio" name="rating" value="4"><span>4 stars</span></label>
+                <label><input type="radio" name="rating" value="5"><span>5 stars</span></label>
+              </div>
+            </fieldset>
+            <div class="form-group">
+              <label for="testimonial-feedback">Feedback</label>
+              <textarea id="testimonial-feedback" name="feedback" rows="4" maxlength="2000" required></textarea>
+            </div>
+            <button type="submit" class="btn primary-btn">Submit feedback</button>
+            <div id="testimonial-status" class="contact-feedback" role="status" aria-live="polite" hidden></div>
+          </form>
+        </div>
+
+        <div id="testimonial-list" class="testimonial-list" aria-label="Recent client testimonials"></div>
+        <button id="testimonial-toggle" class="btn primary-btn testimonial-toggle" type="button" aria-controls="testimonial-list" aria-expanded="false" hidden>Show More</button>
       </section>
 
       <!-- Connect Section -->
