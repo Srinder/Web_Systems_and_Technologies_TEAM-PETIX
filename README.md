@@ -23,45 +23,52 @@ This project showcases the Team Petix group through a shared portfolio hub. The 
 ## Website Structure
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#website-structure)
 
-- `index.html` main homepage for the team with advanced interactive components
-- `html/` individual member profile pages
-- `css/style.css` complete styling and responsive layout
-- `js/script.js` interactive behavior, live feedback feed fetching, and progressive disclosure UI features
-- `server.js` Node.js / Express backend server handling API routes and persistence
-- `feedback.json` local persistent storage file for client testimonials
-- `package.json` project dependencies and configuration
-- `assets/images/` team logo, preview assets, and member photos
+- `frontend/index.html` main homepage
+- `frontend/html/` individual member profile pages
+- `frontend/css/style.css` shared styles and responsive layout
+- `frontend/js/script.js` frontend interactions and API requests
+- `frontend/assets/` favicon and team/member images
+- `backend/server.js` Express server and feedback API
+- `backend/feedback.json` local testimonial data
+- `backend/package.json` and `backend/package-lock.json` backend dependencies
+- `docs/` project and backend documentation
 
 ## Technologies & Backend Stack Used
 [](https://github.com/Srinder/Web_Systems_and_Technologies_TEAM-PETIX#technologies-used)
 
 - **Frontend:** HTML5, CSS3, Responsive Grid & Flexbox, Web Accessibility Standards (WCAG / ARIA live regions)
-- **Backend:** Node.js, Express.js (`server.js`)
-- **Data Persistence:** JSON-based local server storage (`feedback.json`)
+- **Backend:** Node.js, Express.js (`backend/server.js`)
+- **Data Persistence:** JSON-based local server storage (`backend/feedback.json`)
 - **API Endpoints:** 
   - `GET /api/feedback` (Retrieves stored testimonials in newest-first order)
   - `POST /api/feedback` (Validates input rules and persists new review submissions)
 
 ## How to Run
 
-The application features a fully self-contained Express backend for client testimonials and persistent data storage. To run the server locally:
+From the repository root, install the backend dependencies and start the server with these two commands:
 
 ```sh
-npm install
-node server.js
+npm --prefix backend install
+node backend/server.js
+```
 
-Open [http://localhost:3001/](http://localhost:3001/) to view the site. Keep the server running while testing the feedback form; opening `index.html` directly does not connect to the API. Press `Ctrl+C` in the terminal to stop the server.
+Then visit [http://localhost:3001/](http://localhost:3001/) in your browser. Keep the server running while testing the feedback form.
+
+See the [Backend Development Guide](./docs/backend_development.md) for API endpoints, validation logic, and local storage behavior.
+
+## Deploy to Vercel
+
+The root `vercel.json` publishes `frontend/` and rewrites `/api/*` requests to the Express app in `backend/server.js`. Connect this GitHub repository to Vercel to deploy updates from the configured branch. The current JSON-file feedback storage is for local development; use a persistent database before relying on public submissions in a serverless deployment.
+
 
 ## Repository Layout
 
 ```text
-index.html          Team homepage
-html/               Individual profile pages
-css/style.css       Shared site styles
-js/script.js        Frontend interactions and API requests
-server.js           Express server and feedback routes
-feedback.json       Local feedback data
-docs/               Project and backend documentation
+backend/             Express API, dependencies, and feedback data
+frontend/            Homepage, profiles, styles, scripts, and assets
+docs/                Project and backend documentation
+.gitignore           Local dependency ignore rules
+README.md             Project overview and setup
 ```
 
 ## Project Notes

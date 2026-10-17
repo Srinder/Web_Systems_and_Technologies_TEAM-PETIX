@@ -2,15 +2,14 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = 3001;
+const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
+const DATA_FILE = path.join(__dirname, 'feedback.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'html')));
-
-const DATA_FILE = path.join(__dirname, 'feedback.json');
+app.use(express.static(FRONTEND_DIR));
+app.use(express.static(path.join(FRONTEND_DIR, 'html')));
 
 
 function getStoredFeedback() {
@@ -24,7 +23,7 @@ function getStoredFeedback() {
 }
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
 });
 
 // GET endpoint to retrieve all testimonials
@@ -94,6 +93,11 @@ app.post('/api/feedback', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running Advanced Mode on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+        console.log(`Server is running Advanced Mode on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;

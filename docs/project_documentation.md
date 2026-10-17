@@ -14,7 +14,7 @@
 ## Risk Management & Contingency Strategy
 
 * **Version Control & Merge Conflicts (Risk):** 
-  * *Impact:* High. Concurrent edits to shared files (`index.html` or `css/style.css`) could cause Git merge conflicts and delay code integration.
+  * *Impact:* High. Concurrent edits to shared files (`frontend/index.html` or `frontend/css/style.css`) could cause Git merge conflicts and delay code integration.
   * *Contingency Strategy:* Team members will work on isolated feature branches and utilize descriptive commit messages. If a conflict occurs, the team will pause, review conflict markers collaboratively via VS Code Live Share, resolve them locally, and push a clean consolidated commit.
 
 * **Responsive Layout & Accessibility Inconsistencies (Risk):** 
