@@ -4,12 +4,14 @@ This guide describes the Express backend that supports the portfolio's client fe
 
 ## Run the Server
 
-Use Node.js 18 or later. From the repository root, install the backend dependencies and start the server:
+Use Node.js 18 or later. From the repository root, install dependencies and start the server:
 
 ```sh
-npm --prefix backend install
+npm install
 node backend/server.js
 ```
+
+The root `package.json` declares Express for Vercel's root-level `api/feedback.js` function. `backend/package.json` remains alongside the server for backend-local development.
 
 The server listens on port `3001` and serves the site at [http://localhost:3001/](http://localhost:3001/). Keep it running when testing the feedback form, since the browser sends requests to the same-origin API. Stop it with `Ctrl+C`.
 

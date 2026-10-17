@@ -1,6 +1,6 @@
 {
   "outputDirectory": "frontend",
-  "installCommand": "npm --prefix backend install",
+  "installCommand": "npm install",
   "functions": {
     "api/feedback.js": {
       "includeFiles": "backend/feedback.json"

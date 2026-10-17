@@ -46,10 +46,10 @@ This project showcases the Team Petix group through a shared portfolio hub. The 
 
 ## How to Run
 
-From the repository root, install the backend dependencies and start the server with these two commands:
+From the repository root, install dependencies and start the server with these two commands:
 
 ```sh
-npm --prefix backend install
+npm install
 node backend/server.js
 ```
 
@@ -69,6 +69,7 @@ api/                  Vercel Function entry point
 backend/             Express API, dependencies, and feedback data
 frontend/            Homepage, profiles, styles, scripts, and assets
 docs/                Project and backend documentation
+package.json          Root runtime dependency for Vercel Functions
 .gitignore           Local dependency ignore rules
 README.md             Project overview and setup
 ```
