@@ -15,9 +15,11 @@ The server listens on port `3001`, serves `frontend/` at [http://localhost:3001/
 
 When using Live Server to preview `frontend/`, leave this Express server running as well. The frontend directs local Live Server API calls to port `3001` and the backend allows requests from localhost origins.
 
-## Vercel Feedback Read Route
+## Vercel Feedback Storage
 
-The root `vercel.json` publishes `frontend/` and includes `backend/feedback.json` for the Vercel function in `api/feedback.js`. That function serves `GET /api/feedback`, returning the saved review array or an empty array if the data file cannot be read. It returns HTTP `503` for `POST` because Vercel's deployed file system is not persistent storage. Online submissions require a managed datastore; local submissions continue through Express and update `backend/feedback.json`.
+The root `vercel.json` publishes `frontend/` and includes `backend/feedback.json` for the function in `api/feedback.js`. That function serves `GET /api/feedback` from Upstash Redis when configured, seeding Redis from the JSON file on first use. Without Redis credentials, GET still returns the seed data so the feed can load.
+
+To save reviews online, create an Upstash Redis database and add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to the Vercel project's Environment Variables. Set them for Production and Preview as needed, then redeploy. POST returns HTTP `503` with a setup message while these variables are missing. Local submissions continue through Express and update `backend/feedback.json`.
 
 ## API Routes
 
@@ -64,7 +66,7 @@ When a visitor submits the form, the browser trims the values and checks require
 
 ## Data and Limitations
 
-Reviews are stored in the tracked `backend/feedback.json` file. New submissions modify that file, so avoid adding private or identifying client information and review changes before committing.
+The tracked `backend/feedback.json` file contains starter reviews. Local submissions modify that file, so avoid adding private or identifying client information and review changes before committing. Vercel submissions use Redis and do not write to the deployment filesystem.
 
 The backend uses synchronous local file reads and writes. The API does not include authentication, moderation, or rate limiting, so submissions should be reviewed before being presented publicly.
 
