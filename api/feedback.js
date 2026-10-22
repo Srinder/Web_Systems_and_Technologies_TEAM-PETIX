@@ -1,5 +1,16 @@
 const fs = require('fs');
 const path = require('path');
+const {
+  MAX_BODY_BYTES,
+  MAX_STORED_REVIEWS,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW_SECONDS,
+  validateReview,
+  makeReview,
+  publicReviews,
+  clientAddress,
+  rateLimitKey
+} = require('../backend/review_policy');
 
 const feedbackFile = path.join(__dirname, '..', 'backend', 'feedback.json');
 const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
@@ -11,9 +22,17 @@ const saveReviewScript = [
   'local raw = redis.call("GET", KEYS[1])',
   'local reviews = raw and cjson.decode(raw) or cjson.decode(ARGV[2])',
   'table.insert(reviews, 1, cjson.decode(ARGV[1]))',
+  'while #reviews > tonumber(ARGV[3]) do table.remove(reviews) end',
   'local updated = cjson.encode(reviews)',
   'redis.call("SET", KEYS[1], updated)',
   'return updated'
+].join('; ');
+
+const rateLimitScript = [
+  'local count = redis.call("INCR", KEYS[1])',
+  'if count == 1 then redis.call("EXPIRE", KEYS[1], ARGV[1]) end',
+  'local ttl = redis.call("TTL", KEYS[1])',
+  'return {count, ttl}'
 ].join('; ');
 
 function readFeedback() {
@@ -42,7 +61,8 @@ async function redisCommand(command) {
       Authorization: `Bearer ${redisToken}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(command)
+    body: JSON.stringify(command),
+    signal: AbortSignal.timeout(5000)
   });
   const payload = await result.json();
   if (!result.ok || payload.error) {
@@ -60,16 +80,42 @@ async function getStoredFeedback() {
   return parseFeedback(stored);
 }
 
+function jsonBody(request) {
+  const contentType = request.headers?.['content-type'] || request.headers?.['Content-Type'] || '';
+  if (!/^application\/json(?:\s*;|\s*$)/i.test(contentType)) {
+    return { error: 'Submit reviews as application/json.', status: 415 };
+  }
+
+  const contentLength = Number(request.headers?.['content-length']);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return { error: 'Request is too large.', status: 413 };
+  }
+
+  let body = request.body;
+  if (typeof body === 'string') {
+    if (Buffer.byteLength(body, 'utf8') > MAX_BODY_BYTES) return { error: 'Request is too large.', status: 413 };
+    try {
+      body = JSON.parse(body);
+    } catch {
+      return { error: 'Request body must be valid JSON.', status: 400 };
+    }
+  }
+  if (body === undefined || body === null) return { error: 'A JSON object is required.', status: 400 };
+  if (Buffer.byteLength(JSON.stringify(body), 'utf8') > MAX_BODY_BYTES) {
+    return { error: 'Request is too large.', status: 413 };
+  }
+  return { body };
+}
+
 module.exports = async (request, response) => {
   response.setHeader('Cache-Control', 'no-store');
 
   if (request.method === 'GET') {
     if (!redisEnabled) {
-      return response.status(200).json({ success: true, data: readFeedback() });
+      return response.status(200).json({ success: true, data: publicReviews(readFeedback()) });
     }
-
     try {
-      return response.status(200).json({ success: true, data: await getStoredFeedback() });
+      return response.status(200).json({ success: true, data: publicReviews(await getStoredFeedback()) });
     } catch (error) {
       console.error('Failed to load feedback from Upstash.', error);
       return response.status(503).json({ success: false, message: 'Feedback storage is temporarily unavailable.' });
@@ -77,62 +123,46 @@ module.exports = async (request, response) => {
   }
 
   if (request.method === 'POST') {
-    const { clientName, projectType, rating, feedback } = request.body || {};
-    const normalizedClientName = typeof clientName === 'string' ? clientName.trim() : '';
-    const normalizedProjectType = typeof projectType === 'string' ? projectType.trim() : '';
-    const normalizedFeedback = typeof feedback === 'string' ? feedback.trim() : '';
-    const ratingValue = typeof rating === 'string' ? rating.trim() : rating;
-    const numericRating = Number(ratingValue);
-
-    if (!normalizedClientName || normalizedClientName.length > 100) {
-      return response.status(400).json({ success: false, message: 'Client name is required and must be 100 characters or fewer.' });
+    const parsedBody = jsonBody(request);
+    if (parsedBody.error) {
+      return response.status(parsedBody.status).json({ success: false, message: parsedBody.error });
     }
-    if (projectType !== undefined && typeof projectType !== 'string') {
-      return response.status(400).json({ success: false, message: 'Project or service must be text.' });
+    const parsed = validateReview(parsedBody.body);
+    if (parsed.spam) {
+      return response.status(400).json({ success: false, message: 'Review could not be accepted.' });
     }
-    if (normalizedProjectType.length > 120) {
-      return response.status(400).json({ success: false, message: 'Project or service must be 120 characters or fewer.' });
-    }
-    if (!normalizedFeedback || normalizedFeedback.length > 2000) {
-      return response.status(400).json({ success: false, message: 'Feedback is required and must be 2,000 characters or fewer.' });
-    }
-    if ((typeof ratingValue !== 'number' && typeof ratingValue !== 'string') ||
-        ratingValue === '' || !Number.isInteger(numericRating) || numericRating < 1 || numericRating > 5) {
-      return response.status(400).json({ success: false, message: 'Rating must be a whole number from 1 to 5.' });
-    }
+    if (parsed.error) return response.status(400).json({ success: false, message: parsed.error });
     if (!redisEnabled) {
       return response.status(503).json({
         success: false,
-        message: 'Online feedback submissions require UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.'
+        message: 'Online review submissions are temporarily unavailable.'
       });
     }
 
-    const newEntry = {
-      id: Date.now(),
-      clientName: normalizedClientName,
-      projectType: normalizedProjectType || 'General Portfolio',
-      rating: numericRating,
-      feedback: normalizedFeedback,
-      date: new Date().toISOString()
-    };
-
     try {
-      await redisCommand([
-        'EVAL',
-        saveReviewScript,
-        '1',
-        feedbackKey,
-        JSON.stringify(newEntry),
-        JSON.stringify(readFeedback())
+      const address = clientAddress(request, true);
+      const [count, retryAfter] = await redisCommand([
+        'EVAL', rateLimitScript, '1',
+        `team-petix:review-rate:${rateLimitKey(address)}`,
+        String(RATE_LIMIT_WINDOW_SECONDS)
       ]);
-      return response.status(201).json({
+      if (Number(count) > RATE_LIMIT_MAX) {
+        response.setHeader('Retry-After', String(Math.max(1, Number(retryAfter))));
+        return response.status(429).json({ success: false, message: 'Too many submissions. Please try again later.' });
+      }
+
+      const newEntry = makeReview(parsed.value);
+      await redisCommand([
+        'EVAL', saveReviewScript, '1', feedbackKey,
+        JSON.stringify(newEntry), JSON.stringify(readFeedback()), String(MAX_STORED_REVIEWS)
+      ]);
+      return response.status(202).json({
         success: true,
-        message: `Thank you, ${normalizedClientName}! Your ${numericRating}-star review has been saved successfully.`,
-        data: newEntry
+        message: 'Thank you. Your review was received and will appear after it is approved.'
       });
     } catch (error) {
-      console.error('Failed to save feedback to Upstash.', error);
-      return response.status(503).json({ success: false, message: 'Feedback storage is temporarily unavailable.' });
+      console.error('Failed to limit or save review in Upstash.', error);
+      return response.status(503).json({ success: false, message: 'Review submissions are temporarily unavailable.' });
     }
   }
 

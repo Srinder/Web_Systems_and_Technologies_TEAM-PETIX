@@ -285,6 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const formData = new FormData(testimonialForm);
+      const website = formData.get('website').trim();
       const testimonial = {
         clientName: formData.get('clientName').trim(),
         projectType: formData.get('projectType').trim(),
@@ -302,6 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (testimonial.clientName.length > 80 || testimonial.projectType.length > 100 || testimonial.feedback.length > 1000) {
+        showTestimonialStatus('Check the field length limits and try again.', 'error');
+        return;
+      }
+
       submitButton.disabled = true;
       submitButton.textContent = 'Submitting...';
 
@@ -309,15 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(feedbackApiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(testimonial)
+          body: JSON.stringify({ ...testimonial, website })
         });
         const result = await response.json();
-        if (!response.ok || !result.success || !result.data) {
+        if (!response.ok || !result.success) {
           throw new Error(result.message || 'We could not submit your feedback.');
         }
 
-        allTestimonials.unshift(result.data);
-        renderTestimonials(allTestimonials);
         showTestimonialStatus(result.message || 'Thank you for sharing your feedback.', 'success');
         testimonialForm.reset();
       } catch (error) {

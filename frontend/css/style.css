@@ -829,6 +829,7 @@ body.dark-mode .profile-role { color: var(--accent-dark); }
 
 /* Project Demo Container & Compact Image Card Styling */
 .project-preview-container {
+  display: block;
   width: min(100%, 300px);
   aspect-ratio: 16 / 9;
   border-radius: 12px;
@@ -845,6 +846,73 @@ body.dark-mode .profile-role { color: var(--accent-dark); }
   border: 0;
   display: block;
 }
+
+.dashboard-preview-media {
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.spreadsheet-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px;
+  color: #17233d;
+  background: linear-gradient(145deg, #f8fafc, #e7edf5);
+}
+
+.spreadsheet-preview-heading {
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.spreadsheet-preview-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.spreadsheet-preview-metrics span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid #d5deea;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.spreadsheet-preview-metrics strong { font-size: 0.68rem; }
+.spreadsheet-preview-metrics b { color: #64748b; font-size: 0.55rem; font-weight: 600; }
+
+.spreadsheet-preview-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 30px;
+  padding: 0 5px;
+  border-bottom: 1px solid #9aa8bb;
+}
+
+.spreadsheet-preview-bars i {
+  flex: 1;
+  height: 45%;
+  border-radius: 3px 3px 0 0;
+  background: #16834a;
+}
+
+.spreadsheet-preview-bars i:nth-child(2) { height: 72%; }
+.spreadsheet-preview-bars i:nth-child(3) { height: 58%; }
+.spreadsheet-preview-bars i:nth-child(4) { height: 90%; }
+.spreadsheet-preview-bars i:nth-child(5) { height: 66%; }
+.spreadsheet-preview-bars i:nth-child(6) { height: 82%; }
+.spreadsheet-preview-bars i:nth-child(7) { height: 52%; }
+
+body.dark-mode .spreadsheet-preview { color: #f8fafc; background: linear-gradient(145deg, #26364d, #17233d); }
+body.dark-mode .spreadsheet-preview-metrics span { border-color: #46546a; background: #202c3f; }
+body.dark-mode .spreadsheet-preview-metrics b { color: #b9c5d4; }
+body.dark-mode .spreadsheet-preview-bars { border-color: #708097; }
+body.dark-mode .spreadsheet-preview-bars i { background: #36a66a; }
 
 .developer-list {
   display: block;
@@ -918,4 +986,12 @@ body.dark-mode .developer-list {
   .form-row {
     flex-direction: column;
   }
+}
+
+.honeypot-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

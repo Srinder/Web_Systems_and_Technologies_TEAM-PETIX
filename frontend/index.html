@@ -87,13 +87,13 @@
 
           <article class="card project-card featured-project-card">
             <div class="project-preview-container">
-              <img src="assets/images/motorph-preview.png" alt="MotorPH Payroll System Preview" class="project-demo-media">
+              <img src="assets/images/carmela-tableau-marketing-campaign.png" alt="Tableau marketing campaign dashboard showing ROI, engagement, impressions, clicks, and audience filters." class="project-demo-media dashboard-preview-media" loading="lazy" width="1919" height="972">
             </div>
-            <span class="project-badge individual-project-badge">Academic Team Project</span>
-            <h3>MotorPH Payroll System</h3>
-            <p class="project-credit">Developed by <strong>Group 1</strong> (inc. <strong>Jonalyn Tumpong</strong>)</p>
-            <p>Database-backed Java &amp; PostgreSQL payroll application with DOLE deduction logic and JasperReports.</p>
-            <a href="https://github.com/aasarmiento/AOOP" class="btn primary-btn project-action" target="_blank" rel="noopener noreferrer">View project on GitHub &rarr;</a>
+            <span class="project-badge individual-project-badge">Tableau Public Dashboard</span>
+            <h3>Marketing Campaign Performance</h3>
+            <p class="project-credit">Created by <strong>Ma. Carmela Paula Oreta</strong></p>
+            <p>Interactive dashboard comparing campaign ROI, engagement, impressions, clicks, conversion, and audience segments across channels and locations.</p>
+            <a href="https://public.tableau.com/views/MarketingCampaignPerformance_17623551518460/Dashboard1?:language=en-US&amp;:sid=&amp;:redirect=auth&amp;:display_count=n&amp;:origin=viz_share_link" class="btn primary-btn project-action" target="_blank" rel="noopener noreferrer">View Tableau dashboard &rarr;</a>
           </article>
 
           <article class="card project-card featured-project-card">
@@ -229,11 +229,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="testimonial-name">Client name</label>
-                <input type="text" id="testimonial-name" name="clientName" autocomplete="name" maxlength="100" required>
+                <input type="text" id="testimonial-name" name="clientName" autocomplete="name" maxlength="80" required>
               </div>
               <div class="form-group">
                 <label for="testimonial-project">Project or service evaluated</label>
-                <input type="text" id="testimonial-project" name="projectType" maxlength="120" required>
+                <input type="text" id="testimonial-project" name="projectType" maxlength="100" required>
               </div>
             </div>
             <fieldset class="form-group rating-group">
@@ -248,7 +248,11 @@
             </fieldset>
             <div class="form-group">
               <label for="testimonial-feedback">Feedback</label>
-              <textarea id="testimonial-feedback" name="feedback" rows="4" maxlength="2000" required></textarea>
+              <textarea id="testimonial-feedback" name="feedback" rows="4" maxlength="1000" required></textarea>
+            </div>
+            <div class="honeypot-field" aria-hidden="true">
+              <label for="testimonial-website">Leave this field empty</label>
+              <input type="text" id="testimonial-website" name="website" tabindex="-1" autocomplete="off">
             </div>
             <button type="submit" class="btn primary-btn">Submit feedback</button>
             <div id="testimonial-status" class="contact-feedback" role="status" aria-live="polite" hidden></div>
