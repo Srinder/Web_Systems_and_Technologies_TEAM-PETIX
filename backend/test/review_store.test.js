@@ -58,6 +58,33 @@ test('failed atomic rename leaves the existing review file intact', async () => 
   });
 });
 
+test('reads during heavy concurrent writes always see valid JSON and no temp files remain', async () => {
+  await withTemporaryFile('[]', async (filePath, directory) => {
+    const store = createReviewStore(filePath);
+    const writes = Array.from({ length: 50 }, (_, index) =>
+      store.update((reviews) => [{ id: index }, ...reviews])
+    );
+    const reads = Array.from({ length: 50 }, async () => {
+      const reviews = JSON.parse(await fs.promises.readFile(filePath, 'utf8'));
+      assert.ok(Array.isArray(reviews));
+    });
+    await Promise.all([...writes, ...reads]);
+    assert.equal((await store.read()).length, 50);
+    assert.deepEqual(await fs.promises.readdir(directory), ['feedback.json']);
+  });
+});
+
+test('a failed update does not block or lose later updates', async () => {
+  await withTemporaryFile('[]', async (filePath) => {
+    const store = createReviewStore(filePath);
+    const failing = store.update(() => { throw new Error('boom'); });
+    const succeeding = store.update((reviews) => [{ id: 1 }, ...reviews]);
+    await assert.rejects(failing, /boom/);
+    await succeeding;
+    assert.deepEqual(await store.read(), [{ id: 1 }]);
+  });
+});
+
 test('concurrent updates serialize and preserve every review', async () => {
   await withTemporaryFile('[]', async (filePath) => {
     const store = createReviewStore(filePath);

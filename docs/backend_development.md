@@ -72,7 +72,7 @@ When a visitor submits the form, the browser trims and checks required values an
 
 The tracked `backend/feedback.json` file contains starter reviews. Local submissions modify that file, so avoid adding private or identifying client information and review changes before committing. Vercel submissions use Redis and do not write to the deployment filesystem.
 
-Local storage validates the stored JSON before updates, serializes concurrent updates, and uses atomic replacement writes. Read, parse, and write failures return a storage error without replacing the existing data. Reviews are moderated before display, but approval is a manual operation through trusted storage access. The public API does not expose administrative operations.
+Local storage validates the stored JSON before updates, serializes concurrent updates, and uses atomic replacement writes. Read, parse, and write failures return a storage error without replacing the existing data. This protection applies within a single Node process. Running several server instances against the same file would need an OS-level lock or a real database (for example SQLite or Redis, which the Vercel deployment already uses). Reviews are moderated before display, but approval is a manual operation through trusted storage access. The public API does not expose administrative operations.
 
 ## Development Checks
 
